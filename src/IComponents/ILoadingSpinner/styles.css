@@ -1,9 +1,15 @@
+/* default spinner blade color #69717d */
 .spinner {
   font-size: 1rem;
   position: relative;
   display: inline-block;
   width: 1em;
   height: 1em;
+  --spinner-blade-color: #69717d;
+  --spinner-fade-in-delay: 0.8s;
+  opacity: 0;
+  -webkit-animation: fade-in 1s var(--spinner-fade-in-delay) forwards linear;
+  animation: fade-in 1s var(--spinner-fade-in-delay) forwards linear;
 }
 
 .spinner.center {
@@ -24,9 +30,8 @@
   border-radius: 0.5em;
   background-color: transparent;
   transform-origin: center -0.2222em;
-  opacity: 0;
   -webkit-animation: spinner-fade 1s infinite linear;
-  animation: spinner-fade 1s infinite linear;
+  animation: spinner-fade 1s infinite linear;  
 }
 .spinnerBlade:nth-child(1) {
   -webkit-animation-delay: 0s;
@@ -91,7 +96,7 @@
 
 @-webkit-keyframes spinner-fade {
   0% {
-    background-color: #69717d;
+    background-color: var(--spinner-blade-color);
   }
   100% {
     background-color: transparent;
@@ -100,9 +105,18 @@
 
 @keyframes spinner-fade {
   0% {
-    background-color: #69717d;
+    background-color: var(--spinner-blade-color);
   }
   100% {
     background-color: transparent;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

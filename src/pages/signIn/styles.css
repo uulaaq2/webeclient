@@ -1,0 +1,9 @@
+.logoContainer {
+  text-align: center;
+}
+.logo {  
+  padding-top: 10%;
+  padding-bottom: 2%;
+  display: inline-block;
+  width: 120px;    
+}

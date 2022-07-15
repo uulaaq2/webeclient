@@ -67,9 +67,14 @@ function getCookie(key) {
       value: res ? res : ''
     }
     
-    return setSuccess(data)
+    return setSuccessReply({
+      debugLine: _getDebugLine(),
+      data
+    })
   } catch (error) {
-    return setError(error)
+    return setErrorReply({
+      error
+  })
   }
 }
 

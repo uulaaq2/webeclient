@@ -1,28 +1,33 @@
 
-import React, { useEffect } from 'react'
 import './styles.css'
-import ILoadingSpinner from 'IComponents/ILoadingSpinner';
-import signInWithCredentials from 'functions/user/signIn/signInWithCredentials'
+import React, { useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom"
+
+import PublicRoute from 'components/PublicRoute'
+import ProtectedRoute from 'components/ProtectedRoute'
+
+import PublicHome from 'pages/public/publicHome'
+import ProtectedHome from 'pages/protected/protectedHome'
+import SignIn from 'pages/signIn'
 
 const App = () => {
-
-  useEffect(() => {
-    console.log(process.env)
-    const aaa = async () => {
-      const bbb = await signInWithCredentials({
-        emailAddress: 'muhittin.yendun@au.indorama.net',
-        password: '111'
-      })
-
-      console.log(bbb)
-    }
-
-    aaa()
-  }, [])
-
   return (
-      <ILoadingSpinner size='xl' />
-  );
+    <Router>
+
+      <Routes>        
+        <Route exact path="/" element={<PublicHome />} />                    
+      </Routes>
+
+      <Routes>        
+        <Route exact path="/signin" element={<SignIn />} />                    
+      </Routes>
+
+    </Router>
+  )
 };
 
 export default App

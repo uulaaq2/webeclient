@@ -22,10 +22,17 @@ export function _getCallerFile() {
   return callerfile;
 }
 
-export function _getDebugLine(message) {
+/*export function _getDebugLine(message) {
   let e = new Error();
   let frame = e.stack.split("\n")[2]; // change to 3 for grandparent func
   let lineNumber = frame.split(":").reverse()[1];
   let functionName = frame.split(" ")[5];
   return functionName + ":" + lineNumber + " " + message;
+}*/
+
+export function _getDebugLine() {
+  const e = new Error()
+  const regex = /\((.*):(\d+):(\d+)\)$/
+  const match = regex.exec(e.stack.split("\n")[2])
+  return match[1] + ':' + match[2] + ':' + match[3]
 }
