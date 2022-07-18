@@ -3,19 +3,17 @@ import { _getDebugLine} from 'functions/helpers'
 import { baseFetch, fetchOptions } from 'functions/api/fetch/baseFetch'
 import config from 'config'
 
-async function signInWithCredentials(params) {
+async function signIn(params) {
   try {
-    console.log('sign in started')
-    const { emailAddress, password } = params
+    const { emailAddress, password, keepMeSignedIn } = params
 
     const data = {
       emailAddress,
-      password
+      password,
+      keepMeSignedIn
     }
-    console.log(config)
     
-    const signInResult = await baseFetch('POST', config.urls.api.user.signIn, data)
-    console.log(signInResult)
+    const signInResult = await baseFetch('POST', config.urls.api.user.signIn.url, data)
 
     if (signInResult.status !== 'ok') {
       return setCustomReply({
@@ -36,4 +34,4 @@ async function signInWithCredentials(params) {
   }
 }
 
-export default signInWithCredentials
+export default signIn

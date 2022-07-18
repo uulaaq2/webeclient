@@ -1,7 +1,7 @@
 import React from 'react'
 import CStyles from './styles.css'
 
-const ILoadingSpinner = ({ size, center = false, color = 'var(--color-accent-fg)', delay = '0.8s', style = {}, ...rest }) => {
+const ILoading = ({ size, center = false, color = 'var(--color-accent-fg)', delay = '0.8s', style = {}, ...rest }) => {
   let fontSize
   fontSize = '1rem'
   
@@ -20,7 +20,7 @@ const ILoadingSpinner = ({ size, center = false, color = 'var(--color-accent-fg)
 
   let spinnerStyle = {
     ...style,
-    ['--spinner-blade-color']: color,
+    ['--spinner-blade-color']: 'white',
     ['--spinner-fade-in-delay']: delay,
     fontSize
   }
@@ -44,4 +44,4 @@ const ILoadingSpinner = ({ size, center = false, color = 'var(--color-accent-fg)
   );
 };
 
-export default ILoadingSpinner
+export default ILoading

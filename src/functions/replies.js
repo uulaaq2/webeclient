@@ -27,7 +27,7 @@ export function setCustomReply(params = {}) {
 export function setErrorReply(params = {}) {
   const { status = 'error', message = '', debugLine = '', ...rest } = params
   let reply = {
-    status,    
+    status,   
     message,
     debugLine,
      ...rest

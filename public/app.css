@@ -1,3 +1,18 @@
 .form-checkbox label:hover {
   cursor: pointer;
 }
+
+.dot-loading:after {
+  position: absolute;
+  margin-left: .1rem;
+  content: ' ...';
+  display: inline-block;
+  animation: dot-loading steps(4) 1.5s infinite 0.8s;
+  clip: rect(auto, 0px, auto, auto);
+}
+
+@keyframes dot-loading {
+  to {
+    clip: rect(auto, 15px, auto, auto);
+  }
+}

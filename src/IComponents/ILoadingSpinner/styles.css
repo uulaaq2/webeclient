@@ -5,7 +5,8 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  --spinner-blade-color: #69717d;
+  //--spinner-blade-color: #69717d;
+  --spinner-blade-color: inherit;
   --spinner-fade-in-delay: 0.8s;
   opacity: 0;
   -webkit-animation: fade-in 1s var(--spinner-fade-in-delay) forwards linear;

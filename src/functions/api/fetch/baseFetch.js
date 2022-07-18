@@ -25,18 +25,18 @@ export async function baseFetch(method, url, data = {}, accepts = {}) {
     data.site = getLocalStorage('site').value
    
     const result = await axios({ method, url, data, headers })
-    
-    if (result.status !== 'ok') {
+    console.log(result)
+    if (result.data.status !== 'ok') {
       return setCustomReply({
-        status: result.status,
-        message: result.message,
+        status: result.data.status,
+        message: result.data.message,
         debugLine: _getDebugLine(),
-        returnedDebugLine: result.debugLine,
-        obj: result.obj || null
+        returnedDebugLine: result.data.debugLine,
+        obj: result.data.obj
       })
     }
 
-    return result
+    return result.data
   } catch (error) {
     return setErrorReply({
       debugLine: _getDebugLine(),

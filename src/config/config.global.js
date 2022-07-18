@@ -15,7 +15,7 @@ config.urls.api = {
   user: {
     signIn: {
       title: 'Sign in',
-      path: 'http://localhost:3002/user/signin'
+      url: 'http://localhost:3002/signin'
     } 
   }
 }
