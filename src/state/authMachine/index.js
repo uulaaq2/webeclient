@@ -3,6 +3,7 @@ import signIn from 'functions/user/signIn/signIn'
 import { _getDebugLine } from 'functions/helpers';
 import { setSuccessReply, setErrorReply, setCustomReply } from 'functions/replies';
 import { setLocalStorage } from 'functions/storage/localStorage';
+import config from 'config'
 
 export const authMachine = createMachine({
   id: 'authMachine',
@@ -52,6 +53,7 @@ export const authMachine = createMachine({
     },
 
     success: {
+      entry: (c, e) => console.log(c),
       on: {
         RESET: {
           target: 'waiting'
@@ -81,8 +83,6 @@ async function doSignIn(c, e) {
       keepMeSignedIn
     })
 
-    console.log(signInResult)
-
     if (signInResult.status === 'ok') {
       const tokenExpiresIn = (keepMeSignedIn && signInResult.user.Can_Be_Remembered) ? config.tokenExpiresIn : null
 
@@ -92,8 +92,7 @@ async function doSignIn(c, e) {
           status: setEmailResult.status,
           message: setEmailResult.message,
           debugLine: _getDebugLine(),
-          returnedDebugLine: setEmailResult.debugLine,
-          obj: setEmailResult.obj
+          returnedDebug: setEmailResult.debug
         })
       }
 
@@ -103,31 +102,26 @@ async function doSignIn(c, e) {
           status: setTokenResult.status,
           message: setTokenResult.message,
           debugLine: _getDebugLine(),
-          returnedDebugLine: setTokenResult.debugLine,
-          obj: setTokenResult.obj
+          returnedDebug: setTokenResult.debug
         })
       }        
 
-      const setSiteResult = setLocalStorage('site', signInResult.user.site, tokenExpiresIn)
+      const setSiteResult = setLocalStorage('selectedSite', signInResult.selectedSite, tokenExpiresIn)
       if (setSiteResult.status !== 'ok') {
         return setCustomReply({
           status: setSiteResult.status,
           message: setSiteResult.message,
           debugLine: _getDebugLine(),
-          returnedDebugLine: setSiteResult.debugLine,
-          obj: setSiteResult.obj
+          returnedDebug: setSiteResult.debug          
         })
       }
     }
     
     return signInResult
   } catch (error) {
-    console.log(c)
     return setErrorReply({
       debugLine: _getDebugLine(),
-      message: error.message,
-      obj: error,
-      aaa: 'bbb'
+      errorObj: error
     })
   }
 }

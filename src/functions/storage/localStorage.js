@@ -23,7 +23,7 @@ function setCookie(key, value, setExpirationTime) {
     let expires = ''
     if (setExpirationTime) {
       let date = new Date();
-      date.setTime(date.getTime() + (config.tokenExpiresIn * 24 * 60 * 60 * 1000));
+      date.setTime(date.getTime() + (config.tokenExpiresIn.replace(/\D/g,'') * 24 * 60 * 60 * 1000));
       expires = "expires=" + date.toUTCString();
     }
     
@@ -61,19 +61,16 @@ function getCookie(key) {
     }
 
     key = key.slice(-1)
-
-    const data = {
-      key,
-      value: res ? res : ''
-    }
-    
+   
     return setSuccessReply({
       debugLine: _getDebugLine(),
-      data
+      key,
+      value: res ? res : ''
     })
   } catch (error) {
     return setErrorReply({
-      error
+      debugLine: _getDebugLine(),
+      errorObj: error
   })
   }
 }

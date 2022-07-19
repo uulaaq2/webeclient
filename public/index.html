@@ -15,11 +15,15 @@
 </head>
 <body>
   <style>
-    body {
-      background: url('./images/app/bck.svg') no-repeat center;
+    #bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: url('./images/app/bck.svg') no-repeat center;      
       background-size: cover;
     }
   </style>
+  <div id="bg"></div>
   <div id="root" style="min-height: 100vh"></div>
 
   <script src="main.js"></script>
