@@ -18,13 +18,13 @@ export function setCustomReply(params = {}) {
   const { status, message = '', debugLine = '', errorObj = {}, ...rest } = params
   let reply = {
     status,
-    message: message || errorObj.message,
+    message,
     debug: {
       debugLine
     },
     ...rest
   }
-
+  
   Object.getOwnPropertyNames(errorObj).forEach(function(name) {
     reply.debug[name] = errorObj[name]
   })
@@ -36,7 +36,6 @@ export function setErrorReply(params = {}) {
   const { status = 'error', message = '', debugLine = '', errorObj, ...rest } = params
   let reply = {
     status,    
-    message: message || errorObj.message,
     debug: {
       debugLine,
     },

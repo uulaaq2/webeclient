@@ -13,15 +13,14 @@ async function signIn(params) {
       keepMeSignedIn
     }
     
-    const signInResult = await baseFetch('POST', config.urls.api.user.signIn.url, data)
+    const signInResult = await baseFetch('POST', config.urls.signIn.apiUrl, data)
 
     if (signInResult.status !== 'ok') {
       return setCustomReply({
         status: signInResult.status,
         message: signInResult.message,
         debugLine: _getDebugLine(),
-        returnedDebugLine: signInResult.debugLine,
-        obj: signInResult.obj || null
+        returnedDebug: signInResult.debug
       })
     }
 
@@ -29,7 +28,7 @@ async function signIn(params) {
   } catch (error) {
     return setErrorReply({
       debugLine: _getDebugLine(),
-      obj: error
+      errorObj: error
     })    
   }
 }

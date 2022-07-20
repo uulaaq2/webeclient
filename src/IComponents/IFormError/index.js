@@ -24,7 +24,7 @@ const IFormError = ({ errorObj }) => {
           }
       </div>
       { showDetails &&
-        <div className='mt-3 width-full overflow-hidden' style={{border: '1px solid black'}}>         
+        <div className='mt-3 width-full overflow-hidden'>         
           { JSON.stringify(errorObj, null, 2) }
         </div>
       }

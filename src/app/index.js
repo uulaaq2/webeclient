@@ -19,11 +19,14 @@ const App = () => {
     <Router>
 
       <Routes>        
-        <Route exact path="/" element={<PublicHome />} />                    
-      </Routes>
-
-      <Routes>        
         <Route exact path="/signin" element={<SignIn />} />                    
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute element={<ProtectedHome />} />
+          }            
+          />
+
       </Routes>
 
     </Router>

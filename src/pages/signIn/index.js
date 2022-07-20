@@ -12,25 +12,32 @@ import { CopilotWarningIcon } from '@primer/octicons-react'
 
 import { GlobalStateContext } from 'state/globalState'
 import { useActor } from '@xstate/react'
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   usePageInit({
-    pagePath: 'api.user.signIn'
+    pagePath: 'signIn'
   })
-  const appNavigate = useAppNavigate()
 
+  const appNavigate = useAppNavigate()
+  
   const globalServices = useContext(GlobalStateContext)  
   const { send } = globalServices.authService
   const [ state  ] = useActor(globalServices.authService)    
-
-  const [error, setError] = useState()
 
   const emailAddressRef = useRef()
   const passwordRef = useRef()
   const keepmeSignedInRef = useRef()
   const [erroredInputs, setErroredInputs] = useState([])  
+  const [accountErrorExceptions] = useState(['invalidToken', 'shouldChangePassword'])
 
-  useEffect(() => {
+  useEffect(() => {      
+    if (state.context.userInfo?.status === 'ok') {
+      appNavigate(state.context.userInfo.user.Home_Page)
+
+      return
+    }
+
     if (!state.context.inProgress && state.context.userInfo?.status !== 'success') {
       emailAddressRef.current.focus()
     }
@@ -86,7 +93,7 @@ const SignIn = () => {
   }
 
   return (
-    <>
+    <>  
       <div className={CStyles.logoContainer}>
         <img src={Logo} className={CStyles.logo} alt={config.app.name} />
       </div>
@@ -131,9 +138,11 @@ const SignIn = () => {
     
         </form>
             <button onClick={() => appNavigate('/')}>aaa</button>
-          { state.value === 'failed' &&
+          { state.value === 'failed' && !accountErrorExceptions.includes(state.context.userInfo.status) &&
             <div className='form-group'>
-              <IFormError errorObj={state.context.userInfo} />
+              <IFormError 
+                errorObj={state.context.userInfo} 
+              />
             </div>
           } 
         </div>

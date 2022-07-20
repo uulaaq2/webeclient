@@ -1,5 +1,5 @@
 import { createMachine, interpret, assign } from 'xstate'
-import signIn from 'functions/user/signIn/signIn'
+import signIn from 'functions/user/signIn'
 import { _getDebugLine } from 'functions/helpers';
 import { setSuccessReply, setErrorReply, setCustomReply } from 'functions/replies';
 import { setLocalStorage } from 'functions/storage/localStorage';
@@ -52,10 +52,10 @@ export const authMachine = createMachine({
       }
     },
 
-    success: {
-      entry: (c, e) => console.log(c),
+    success: {      
       on: {
         RESET: {
+          actions: assign({ inProgress: false }),
           target: 'waiting'
         }
       }
@@ -75,7 +75,8 @@ service.start()
 
 async function doSignIn(c, e) {
   try {
-    const { emailAddress, password, keepMeSignedIn } = e
+    const { emailAddress, password, keepMeSignedIn } = e    
+    let signInType = (emailAddress && password) ? 'credentials' : 'token'
 
     const signInResult = await signIn({
       emailAddress,
@@ -83,7 +84,7 @@ async function doSignIn(c, e) {
       keepMeSignedIn
     })
 
-    if (signInResult.status === 'ok') {
+    if (signInType === 'credentials' && signInResult.status === 'ok') {
       const tokenExpiresIn = (keepMeSignedIn && signInResult.user.Can_Be_Remembered) ? config.tokenExpiresIn : null
 
       const setEmailResult = setLocalStorage('emailAddress', emailAddress, tokenExpiresIn)
@@ -119,7 +120,8 @@ async function doSignIn(c, e) {
     
     return signInResult
   } catch (error) {
-    return setErrorReply({
+    console.log(error)
+    return setErrorReply({      
       debugLine: _getDebugLine(),
       errorObj: error
     })

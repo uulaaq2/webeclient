@@ -11,7 +11,7 @@
   font-size: 2rem;
   overflow: hidden;
   position: relative;
-  animation: text-color 2s ease-in-out infinite alternate;
+  animation: text-color 2s ease-in-out infinite alternate;  
 }
 
 .spinnerSector {
@@ -21,7 +21,9 @@
   border-radius: 50%;
   border: 3px solid transparent;
   //mix-blend-mode: overlay;
-  animation: rotate var(--duration) var(--timing) infinite;
+  opacity: 0;
+  animation: rotate var(--duration) var(--timing) infinite,
+             fade-in 0.5s ease 0.8s forwards;
   pointer-events: none;
 }
 
@@ -64,6 +66,15 @@
 
   100% {
     color: rgba(0, 0, 0, .1);
+  }
+}
+
+@keyframes fade-in {
+  99%{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 

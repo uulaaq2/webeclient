@@ -1,5 +1,5 @@
 import config from 'config'
-import { setSuccessReply, setErrorReply } from 'functions/replies';
+import { setSuccessReply, setCustomReply, setErrorReply } from 'functions/replies';
 import { _getDebugLine } from 'functions/helpers';
 
 export function setLocalStorage(key, value, setExpirationTime = null) {
@@ -29,14 +29,10 @@ function setCookie(key, value, setExpirationTime) {
     
     document.cookie = key + "=" + value + "; " + expires + "; path=/";    
   
-    let data = {
-      key,
-      value
-    }
-
     return setSuccessReply({ 
       debugLine: _getDebugLine(),
-      data 
+      key,
+      value
     })
 
   } catch (error) {
@@ -50,6 +46,7 @@ function setCookie(key, value, setExpirationTime) {
 function getCookie(key) {
   try {
     key += "="
+    const keyTemp = key
     const cDecoded = decodeURIComponent(document.cookie);
     const cArr = cDecoded .split('; ');
     let res = ''
@@ -61,12 +58,19 @@ function getCookie(key) {
     }
 
     key = key.slice(-1)
-   
-    return setSuccessReply({
-      debugLine: _getDebugLine(),
-      key,
-      value: res ? res : ''
-    })
+    
+    if (res) {
+      return setSuccessReply({
+        debugLine: _getDebugLine(),
+        value: res
+      })
+    } else {
+      return setCustomReply({
+        status: 'empty',
+        message: `${keyTemp} has no stored cookie value`,
+        debugLine: _getDebugLine()
+      })
+    }
   } catch (error) {
     return setErrorReply({
       debugLine: _getDebugLine(),

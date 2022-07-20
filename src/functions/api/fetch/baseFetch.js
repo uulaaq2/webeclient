@@ -25,14 +25,13 @@ export async function baseFetch(method, url, data = {}, accepts = {}) {
     data.site = getLocalStorage('selectedSite').value
    
     const result = await axios({ method, url, data, headers })
-    console.log(result)
+    
     if (result.data.status !== 'ok') {
       return setCustomReply({
         status: result.data.status,
         message: result.data.message,
         debugLine: _getDebugLine(),
-        returnedDebugLine: result.data.debugLine,
-        obj: result.data.obj
+        returnedDebug: result.data.debug
       })
     }
 
@@ -40,7 +39,7 @@ export async function baseFetch(method, url, data = {}, accepts = {}) {
   } catch (error) {
     return setErrorReply({
       debugLine: _getDebugLine(),
-      obj: error
+      errorObj: error
     })
   }  
 }
