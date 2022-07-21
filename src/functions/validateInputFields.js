@@ -1,5 +1,5 @@
-import { setSuccessReply, setCustomReply, setErrorReply } from 'functions/replies'
-import { _getDebugLine } from 'functions/helpers'
+import { setSuccessReply } from 'functions/replies'
+import CustomError from 'classes/CustomError'
 
 export const validateInputFields = (inputs) => {  
   try {   
@@ -56,20 +56,12 @@ export const validateInputFields = (inputs) => {
     inputs.setErroredInputs(() => [ ...erroredElements])
 
     if (erroredElements.length > 0) {
-      return setCustomReply({
-        status: 'erroredElements',
-        debugLine: _getDebugLine()
-      })
+      throw new CustomError('There are errored elements', 'erroredElementsExists')
     } else {
-      return setSuccessReply({
-        debugLine: _getDebugLine()
-      })
+      return setSuccessReply()
     }    
   } catch (error) {
-    return setErrorReply({
-      message: error.message || '',
-      obj: error
-    })
+    throw new CustomError(error.message, error.iType)
   }
 }
 

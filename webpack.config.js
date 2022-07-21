@@ -76,6 +76,7 @@ module.exports={
             pages: "/src/pages",
             state: "/src/state",
             config: "/src/config",
+            classes: "/src/classes",
             functions: "/src/functions",
             images: "/src/images",
             css: "/src/css",

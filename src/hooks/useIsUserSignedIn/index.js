@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { setSuccessReply, setCustomReply, setErrorReply } from 'functions/replies'
+import { setSuccessReply, setCustomReply } from 'functions/replies'
+import CustomError from 'classes/CustomError';
 import { getLocalStorage } from 'functions/storage/localStorage';
-import { _getDebugLine } from 'functions/helpers';
 import signIn from 'functions/user/signIn'
 
 import { GlobalStateContext } from 'state/globalState'
@@ -16,50 +16,25 @@ const useIsUserSignedIn = (initialAuthResult) => {
   function startAuth() {    
     if (state.context.userInfo?.status === 'ok') {
       setAuthResult(setCustomReply({
-        status: 'alreadySignedIn',
-        message: 'alreadySignedIn',
-        authInProgress: false,
-        debugLine: _getDebugLine()
+        iStatus: 'alreadySignedIn',
+        message: 'Already signed in',
+        authInProgress: false
       }))
 
       return
     }
     // get token
     const getTokenResult = getLocalStorage('token')
-
-    if (getTokenResult.status === 'error') {     
-      setAuthResult(setCustomReply({
-        status: getTokenResult.status,
-        message: getTokenResult.message,
-        authInProgress: false,
-        debugLine: _getDebugLine(),
-        returnedDebug: getTokenResult.debug
-      }))
-
-      return
-    }
-
-    if (getTokenResult.status === 'ok' && getTokenResult.value) {
-      send('SIGN_IN', { token: getTokenResult.value })
-    } else {
-      setAuthResult(setCustomReply({
-        status: 'noToken',
-        message: 'noToken',
-        authInProgress: false,
-        debugLine: _getDebugLine()
-      }))
-    }
+    send('SIGN_IN', { token: getTokenResult.value })
     // get token    
   }
 
   useEffect(() => {
     if (state.matches('failed') || state.matches('success')) {      
       setAuthResult(setCustomReply({
-        status: state.context.userInfo.status,
+        iStatus: state.context.userInfo.status,
         message: state.context.userInfo.message,
         authInProgress: state.matches('failed') ? false : false,
-        debugLine: _getDebugLine(),
-        returnedDebug: state.context.userInfo.debug
       }))
     }
   }, [state.value])

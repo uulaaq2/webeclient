@@ -1,6 +1,6 @@
 import config from 'config'
-import { setSuccessReply, setCustomReply, setErrorReply } from 'functions/replies';
-import { _getDebugLine } from 'functions/helpers';
+import { setSuccessReply } from 'functions/replies';
+import CustomError from 'classes/CustomError';
 
 export function setLocalStorage(key, value, setExpirationTime = null) {
   if (config.localStorageType === 'cookie') {
@@ -30,16 +30,14 @@ function setCookie(key, value, setExpirationTime) {
     document.cookie = key + "=" + value + "; " + expires + "; path=/";    
   
     return setSuccessReply({ 
-      debugLine: _getDebugLine(),
-      key,
-      value
+      data: {
+        key,
+        value
+      }
     })
 
   } catch (error) {
-    return setErrorReply({
-      debugLine: _getDebugLine(),
-      obj: error
-    })
+    throw new CustomError(error.message, error.iType)
   }
 }
 
@@ -61,21 +59,15 @@ function getCookie(key) {
     
     if (res) {
       return setSuccessReply({
-        debugLine: _getDebugLine(),
-        value: res
+        data: {
+          res
+        }
       })
     } else {
-      return setCustomReply({
-        status: 'empty',
-        message: `${keyTemp} has no stored cookie value`,
-        debugLine: _getDebugLine()
-      })
+      throw new CustomError(`Empty cookie value for ${key}`, 'emptyCookieValue')
     }
   } catch (error) {
-    return setErrorReply({
-      debugLine: _getDebugLine(),
-      errorObj: error
-  })
+    throw new CustomError(error.message, error.iType)
   }
 }
 

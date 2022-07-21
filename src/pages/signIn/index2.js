@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import config from 'config'
 import useAppNavigate from 'hooks/useAppNavigate/index'
-import SignIn from './signIn'
+import SignIn from '.'
 
 import { GlobalStateContext } from 'state/globalState'
 import { useActor } from '@xstate/react'
