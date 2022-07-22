@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setSuccessReply } from 'functions/replies';
 import CustomError from 'classes/CustomError';
-import { getLocalStorage } from 'functions/storage/localStorage';
+import { getLocalStorage } from 'functions/localStorage';
 
 export const fetchOptions = {
   headers: {
@@ -26,12 +26,16 @@ export async function baseFetch(method, url, data = {}, accepts = {}) {
    
     const result = await axios({ method, url, data, headers })
     
+    if (!result.data?.iStatus || result.data?.iStatus === 'error') {
+      throw new CustomError(result.data)
+    }
+    
     if (result.data.data)
       return result.data.data
 
     return result.data
     
   } catch (error) {
-    throw new CustomError(error.message, error.iType)
+    throw new CustomError(error)
   }  
 }

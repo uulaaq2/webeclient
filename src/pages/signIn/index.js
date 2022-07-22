@@ -32,6 +32,8 @@ const SignIn = () => {
   const [accountErrorExceptions] = useState(['invalidToken', 'shouldChangePassword'])
 
   useEffect(() => {      
+    console.log(state.value)
+    console.log(state.context.userInfo);
     if (state.context.userInfo?.status === 'ok') {
       appNavigate(state.context.userInfo.user.Home_Page)
 
@@ -77,19 +79,21 @@ const SignIn = () => {
   }, [erroredInputs])
 
   async function handleSubmit(e) {
-    e.preventDefault()
+    try {
 
-    const validateInputFieldsResult = validateInputFields(inputs)
-    if (validateInputFieldsResult.status === 'error') { 
-      setError(validateInputFieldsResult.message)
-    }
-    if (validateInputFieldsResult.status !== 'ok') return
+      e.preventDefault()
 
-    send('SIGN_IN',{
-      emailAddress: emailAddressRef.current.value,
-      password: passwordRef.current.value,
-      keepMeSignedIn: keepmeSignedInRef.current.checked
-    })
+      const validateInputFieldsResult = validateInputFields(inputs)
+     
+      send('SIGN_IN',{
+        emailAddress: emailAddressRef.current.value,
+        password: passwordRef.current.value,
+        keepMeSignedIn: keepmeSignedInRef.current.checked
+      })      
+
+    } catch (error) {
+
+    }    
   }
 
   return (

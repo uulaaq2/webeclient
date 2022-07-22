@@ -14,17 +14,16 @@ const ProtectedRoute = ({ element }) => {
   const [ state  ] = useActor(globalServices.authService)  
 
   const [authResult, startAuth] = useIsUserSignedIn({ status: 'waiting', authInProgress: true })  
-  const [statusForRedirection] = useState(['noToken', 'invalidToken', 'accountIsExpired', 'shouldChangePassword'])
+  const [statusForRedirection] = useState(['empty', 'invalidToken', 'accountIsExpired', 'shouldChangePassword'])
   
   const appNavigate = useAppNavigate()
-  console.log('protected route')
   useEffect(() => {
     startAuth()
   }, [])
 
   useEffect(() => {
     console.log(authResult)
-    if (statusForRedirection.includes(authResult.status)) {
+    if (statusForRedirection.includes(authResult.iStatus)) {
       appNavigate(config.urls.signIn.url)
     }
   }, [authResult])

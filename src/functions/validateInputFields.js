@@ -56,12 +56,15 @@ export const validateInputFields = (inputs) => {
     inputs.setErroredInputs(() => [ ...erroredElements])
 
     if (erroredElements.length > 0) {
-      throw new CustomError('There are errored elements', 'erroredElementsExists')
+      throw new CustomError({
+        iType: 'inputValidationError',
+        message: 'Input validation error'
+      })
     } else {
       return setSuccessReply()
     }    
   } catch (error) {
-    throw new CustomError(error.message, error.iType)
+    throw new CustomError(error)
   }
 }
 

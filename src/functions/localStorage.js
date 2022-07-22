@@ -1,5 +1,5 @@
 import config from 'config'
-import { setSuccessReply } from 'functions/replies';
+import { setSuccessReply, setCustomReply } from 'functions/replies';
 import CustomError from 'classes/CustomError';
 
 export function setLocalStorage(key, value, setExpirationTime = null) {
@@ -37,7 +37,7 @@ function setCookie(key, value, setExpirationTime) {
     })
 
   } catch (error) {
-    throw new CustomError(error.message, error.iType)
+    throw new CustomError(error)
   }
 }
 
@@ -64,10 +64,14 @@ function getCookie(key) {
         }
       })
     } else {
-      throw new CustomError(`Empty cookie value for ${key}`, 'emptyCookieValue')
+      return setCustomReply({
+        iStatus: 'empty',
+        message: `Empty cookie value for ${key}`
+    })
     }
   } catch (error) {
-    throw new CustomError(error.message, error.iType)
+    console.log('local storage error', error)
+    throw new CustomError(error)
   }
 }
 

@@ -1,6 +1,6 @@
 import { setSuccessReply } from 'functions/replies'
 import CustomError from 'classes/CustomError'
-import { baseFetch, fetchOptions } from 'functions/api/fetch/baseFetch'
+import { baseFetch, fetchOptions } from 'functions/api/baseFetch'
 import config from 'config'
 
 async function signIn(params) {
@@ -17,7 +17,7 @@ async function signIn(params) {
 
     return signInResult    
   } catch (error) {
-    throw new CustomError(error.message, error.iType)
+    throw new CustomError(error)
   }
 }
 
